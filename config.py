@@ -10,4 +10,4 @@ UNIT_SYSTEM = "metric"
 # UNIT_SYSTEM = "imperial"
 
 # Automatically find first date where data is logged
-FIND_FIRST_DATE = True
+FIND_FIRST_DATE = False

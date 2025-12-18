@@ -1,8 +1,9 @@
 # Made with love by Karl
-# Contact me on Telegram: @karlpy
 
-import requests
+# Contact me on Telegram: @karlpy
+import os
 import csv
+import requests
 import lxml.html as lh
 
 import config
@@ -15,8 +16,8 @@ from util.Utils import Utils
 stations_file = open('stations.txt', 'r')
 URLS = stations_file.readlines()
 # Date format: YYYY-MM-DD
-START_DATE = config.START_DATE
-END_DATE = config.END_DATE
+# START_DATE = config.START_DATE
+# END_DATE = config.END_DATE
 
 # set to "metric" or "imperial"
 UNIT_SYSTEM = config.UNIT_SYSTEM
@@ -24,12 +25,12 @@ UNIT_SYSTEM = config.UNIT_SYSTEM
 FIND_FIRST_DATE = config.FIND_FIRST_DATE
 
 
-def scrap_station(weather_station_url):
+def scrap_station(weather_station_url,date_start,date_end,odir):
 
     session = requests.Session()
     timeout = 5
-    global START_DATE
-    global END_DATE
+    START_DATE = date_start
+    END_DATE = date_end
     global UNIT_SYSTEM
     global FIND_FIRST_DATE
 
@@ -43,8 +44,9 @@ def scrap_station(weather_station_url):
     url_gen = Utils.date_url_generator(weather_station_url, START_DATE, END_DATE)
     station_name = weather_station_url.split('/')[-1]
     file_name = f'{station_name}.csv'
+    fpath = os.path.join(odir, file_name)
 
-    with open(file_name, 'a+', newline='') as csvfile:
+    with open(fpath, 'a+', newline='') as csvfile:
         fieldnames = ['Date', 'Time',	'Temperature',	'Dew_Point',	'Humidity',	'Wind',	'Speed',	'Gust',	'Pressure',	'Precip_Rate',	'Precip_Accum',	'UV',   'Solar']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
@@ -83,8 +85,10 @@ def scrap_station(weather_station_url):
                 print(e)
 
 
-
-for url in URLS:
-    url = url.strip()
-    print(url)
-    scrap_station(url)
+def scrape(urls,date_start,date_end,odir):
+    for url in urls:
+        url = url.strip()
+        print(url)
+        scrap_station(url,date_start,date_end,odir)
+        print(f"Done with {url}")
+    print(f"Done! Check data in the {odir}")
