@@ -13,8 +13,6 @@ from util.Parser import Parser
 from util.Utils import Utils
 
 # configuration
-stations_file = open('stations.txt', 'r')
-URLS = stations_file.readlines()
 # Date format: YYYY-MM-DD
 # START_DATE = config.START_DATE
 # END_DATE = config.END_DATE

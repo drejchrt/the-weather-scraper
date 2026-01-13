@@ -1,6 +1,7 @@
 
 import os
 import datetime
+import webbrowser
 
 import tkinter as tk
 from tkinter import filedialog, messagebox
@@ -49,7 +50,10 @@ class WeatherScraperGUI(ttkb.Window):
         self.url_entry = ttkb.Entry(row)
         self.url_entry.pack(side=LEFT, fill=X, expand=True, padx=(0, 8))
         add_btn = ttkb.Button(row, text="Add", bootstyle=SUCCESS, command=self.add_url)
-        add_btn.pack(side=LEFT)
+        add_btn.pack(side=LEFT, padx=(0, 8))
+        map_btn = ttkb.Button(row, text="Map", bootstyle=INFO, command=self.open_map)
+        map_btn.pack(side=LEFT)
+
 
         # URL list display (Treeview)
         list_frame = ttkb.Frame(section)
@@ -91,6 +95,9 @@ class WeatherScraperGUI(ttkb.Window):
         self.url_list.append(url)
         self.url_tree.insert("", tk.END, values=(url,))
         self.url_entry.delete(0, tk.END)
+
+    def open_map(self):
+        webbrowser.open_new("https://www.wunderground.com/wundermap?lat=47.40881&lon=9.618276&zoom=13")
 
     def remove_selected_url(self):
         sel = self.url_tree.selection()
